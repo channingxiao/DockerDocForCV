@@ -1,0 +1,6 @@
+site_name: DockerDocsForCV
+theme: readthedocs
+pages:
+- Home: index.md
+- Installation:
+    - Installation.md
