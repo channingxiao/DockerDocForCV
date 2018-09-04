@@ -13,18 +13,19 @@
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="../css/highlight.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
   
   <script>
     // Current page data
     var mkdocs_page_name = "Installation";
     var mkdocs_page_input_path = "Installation.md";
-    var mkdocs_page_url = "/Installation/";
+    var mkdocs_page_url = null;
   </script>
   
-  <script src="../js/jquery-2.1.1.min.js"></script>
-  <script src="../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
 
@@ -38,7 +39,7 @@
         <a href=".." class="icon icon-home"> DockerDocsForCV</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -64,7 +65,7 @@
     <li class="toctree-l3"><a href="#install-docker-ce">Install docker ce</a></li>
     
 
-    <li class="toctree-l3"><a href="#install-nvidia-docker">Install nvidia docker</a></li>
+    <li class="toctree-l3"><a href="#install-nvidia-docker">Install nvidia-docker</a></li>
     
 
     </ul>
@@ -108,8 +109,95 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="install-docker-ce">Install docker ce</h1>
-<h1 id="install-nvidia-docker">Install nvidia docker</h1>
+                <h1 id="install-docker-ce"><a href="https://docs.docker.com/install">Install docker ce</a></h1>
+<p>The following tutorial is for Ubuntu only</p>
+<ul>
+<li>Step 1: Install some necessary system tools</li>
+</ul>
+<pre><code class="shell">sudo apt-get update
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+</code></pre>
+
+<ul>
+<li>Step 2: Install the GPG certificate
+Here we will use aliyun software source</li>
+</ul>
+<pre><code class="shell">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+</code></pre>
+
+<ul>
+<li>Step 3: Write the software source information</li>
+</ul>
+<pre><code class="shell">sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;
+sudo apt-get update
+</code></pre>
+
+<ul>
+<li>Step 4: Search for available versions Docker-CE</li>
+</ul>
+<pre><code class="shell">apt-cache madison docker-ce
+</code></pre>
+
+<ul>
+<li>Step 4: Update and install Docker-CE</li>
+</ul>
+<pre><code class="shell">sudo apt-get -y update
+sudo apt-get -y install docker-ce=18.06.1~ce~3-0~ubuntu
+</code></pre>
+
+<p>replace "18.06.1~ce~3-0~ubuntu" with the version you want</p>
+<ul>
+<li>Step 5: Installation verification</li>
+</ul>
+<pre><code class="shell">sudo docker version
+</code></pre>
+
+<p>You'll get the following output</p>
+<pre><code>Client:
+ Version:           18.06.1-ce
+ API version:       1.38
+ Go version:        go1.10.3
+ Git commit:        e68fc7a
+ Built:             Tue Aug 21 17:24:58 2018
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          18.06.1-ce
+  API version:      1.38 (minimum version 1.12)
+  Go version:       go1.10.3
+  Git commit:       e68fc7a
+  Built:            Tue Aug 21 17:23:24 2018
+  OS/Arch:          linux/amd64
+  Experimental:     false
+</code></pre>
+
+<ul>
+<li>Step 6: Manage docker as a non-root user</li>
+</ul>
+<p>You may notice that we need <code>sudo</code> permission to run docker command
+in step 5, if you don't want to preface docker command with <code>sudo</code>,
+you can create a Unix group called <code>docker</code> and add users to it. </p>
+<ol>
+<li>create the '''docker''' group</li>
+</ol>
+<pre><code class="shell">sudo groupadd docker
+</code></pre>
+
+<ol>
+<li>Add your user to the <code>docker</code> group</li>
+</ol>
+<pre><code class="shell">sudo useradd -aG docker $USER
+</code></pre>
+
+<ol>
+<li>Verify that you can run docker commands without <code>sudo</code></li>
+</ol>
+<pre><code class="shell">docker run hello-world
+</code></pre>
+
+<h1 id="install-nvidia-docker"><a href="https://docs.docker.com/install">Install nvidia-docker</a></h1>
               
             </div>
           </div>
@@ -132,12 +220,12 @@
 
   Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-	  
+      
         </div>
       </div>
 
     </section>
-    
+
   </div>
 
   <div class="rst-versions" role="note" style="cursor: pointer">
@@ -149,7 +237,9 @@
       
     </span>
 </div>
-    <script src="../js/theme.js"></script>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
 
 </body>
 </html>
